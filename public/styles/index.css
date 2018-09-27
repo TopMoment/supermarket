@@ -106,6 +106,10 @@ html, body {
     line-height: 33px;
     height: 33px;
 }
+.el-menu-item-group .el-menu-item a{
+    color: #fff;
+    text-decoration: none;
+}
 .el-menu-item-group .el-menu-item.is-active {
     background-color:transparent;
     color: #409EFF;
