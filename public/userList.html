@@ -66,7 +66,7 @@
                                             <i class="el-icon-edit"></i>
                                             编辑
                                         </el-button>
-                                        <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">
+                                        <el-button size="mini" type="danger" @click="handleDelete(scope.row.id)">
                                             <i class="el-icon-delete"></i>
                                             删除
                                         </el-button>
@@ -103,12 +103,27 @@
                 }
             },
             created(){
-                var _this = this
+            //调用一次请求说有数据方法
+            this.getAllusers()
+            },
+            methods: {
+                getAllusers () {
+                    var _this = this
                 $.get('/users/userList', function (data) {
                   _this.tableData = data;
                 })
-            },
-            methods: {
+                },
+                handleDelete (id){
+                    var _this = this
+                   $.get(`/users/userDeleteOne?id=${id}`, function (data) {
+                       if (data.errcode === 1){
+                           alert(data.msg);
+                           _this.getAllusers()
+                       } else {
+                           alert(data.msg);
+                       }
+                   })
+                },
                 toggleSelection(rows) {
                     if (rows) {
                         rows.forEach(row => {

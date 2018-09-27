@@ -34,7 +34,7 @@ router.post('/userAdd', (req,res) => {
 
 router.get('/userList', (req, res) => {
   // 构造sql语句 查询
-  const sqlStr = 'select * from users';
+  const sqlStr = 'select * from users order by ctime desc';
   // 执行sql语句
   connection.query(sqlStr, (err, data) => {
     if (err) {
@@ -44,5 +44,26 @@ router.get('/userList', (req, res) => {
     }
   })
 
+});
+// 接收单挑删除请求的方式
+router.get('/userDeleteOne', (req, res) => {
+  let {id} = req.query;
+
+  const sqlStr = `delete from users where id = ${id}`;
+//  执行删除
+  connection.query(sqlStr, (err, data) => {
+    if (err) {
+      throw err;
+    } else {
+      if (data.affectedRows > 0) {
+        res.send({'errcode' : 1, "msg": "删除成功!"})
+      } else {
+        res.send({'errcode' : 0, "msg": "删除失败!"})
+      }
+    }
+  })
+
 })
+
+
 module.exports = router;
