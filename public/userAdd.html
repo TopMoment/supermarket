@@ -38,7 +38,8 @@
                         </div>
                         <div class="text item">
                             <!-- 添加账号的表单 -->
-                            <el-form :model="loginForm" class="addUserForm" status-icon :rules="rules" ref="loginForm" label-width="100px" class="demo-ruleForm">
+                            <el-form :model="loginForm" class="addUserForm" status-icon :rules="rules" ref="loginForm"
+                                label-width="100px" class="demo-ruleForm">
                                 <!-- 用户名 -->
                                 <el-form-item label="用户名" prop="username">
                                     <el-input type="text" v-model="loginForm.username" autocomplete="off"></el-input>
@@ -99,8 +100,8 @@
                     loginForm: {
                         username: '',  // 用户名
                         password: '',  // 密码
-                        confirmPassword: '' ,// 确认密码
-                        group:''
+                        confirmPassword: '',// 确认密码
+                        group: ''
                     },
                     // 验证规则
                     rules: {
@@ -120,7 +121,7 @@
                         ],
                         // 选择用户组
                         group: [
-                            {required: true, message: "请选择用户组", trigger:'change'}
+                            { required: true, message: "请选择用户组", trigger: 'change' }
                         ]
                     }
                 };
@@ -135,17 +136,21 @@
                             // 定义对象参数
                             const parmas = {
                                 "username": this.loginForm.username,
-                                "password":this.loginForm.password,
-                                "group":this.loginForm.group
+                                "password": this.loginForm.password,
+                                "group": this.loginForm.group
                             }
-                           $.post('/users/userAdd', parmas, function (data) {
-                               console.log(data);
-                               if (data.errcode === 1) {
-                                   alert(data.msg)
-                               } else {
-                                   alert(data.msg)
-                               }
-                           })
+                            $.post('/users/userAdd', parmas, function (data) {
+
+                                if (data.errcode === 1) {
+                           
+                                    alert(data.msg);
+                              
+                                       location.href = './userList.html';
+                    
+                                } else {
+                                    alert(data.msg)
+                                }
+                            })
                         } else {
                             // 前端验证不通过 不允许提交
                             console.log('前端验证失败 不允许提交!');

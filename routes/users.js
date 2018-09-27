@@ -13,17 +13,34 @@ router.post('/userAdd', (req,res) => {
   // 接收前端参数账号
   let {username, password, group} = req.body;
   // console.log(username, password, group);
-  const sqlStr = `insert into users(username, password, groups) values ('${username}', '${password}', '${group}')`;
-  connection.query(sqlStr, (err, data) => {
+  const sqlStr = `insert into users(id, username, password, groups, ctime) values (default,?,?,?,default)`;
+  
+// const sqlParams = [username, password, group]  数组可以直接解析变量
+  const sqlParams = [`${username}`, `${password}`, `${group}`]
+  connection.query(sqlStr, sqlParams, (err, data) => {
     if (err) {
       throw err;
     } else {
       console.log(data);
       if (data.affectedRows > 0) {
-        res.send({'errcode' : '1', "msg": "添加成功!"})
+        res.send({'errcode' : 1, "msg": "添加成功!"})
       } else {
-        res.send({'errcode' : '0', "msg": "添加失败!"})
+        res.send({'errcode' : 0, "msg": "添加失败!"})
       }
+    }
+  })
+
+});
+
+router.get('/userList', (req, res) => {
+  // 构造sql语句 查询
+  const sqlStr = 'select * from users';
+  // 执行sql语句
+  connection.query(sqlStr, (err, data) => {
+    if (err) {
+      throw err;
+    } else {
+     res.send(data);
     }
   })
 

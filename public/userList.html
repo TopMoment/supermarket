@@ -10,11 +10,14 @@
     <link rel="stylesheet" href="./libs/elementui/css/elementui.min.css">
     <!-- 引入自定义样式 -->
     <link rel="stylesheet" href="./styles/index.css">
-
+<script src="./libs/jquery/jquery.min.js"></script>
+<!-- 引入时间库 -->
+<script src="./libs/moment/moment.js"></script>
     <!-- 引入vue.min.js -->
     <script src="./libs/vue/vue.min.js"></script>
     <!-- 引入elementui.min.js -->
     <script src="./libs/elementui/js/elementui.min.js"></script>
+    
 </head>
 
 <body>
@@ -49,12 +52,12 @@
                                 </el-table-column>
 
                                 <!-- 用户组别 -->
-                                <el-table-column prop="group" label="用户组别"  show-overflow-tooltip>
+                                <el-table-column prop="groups" label="用户组别"  show-overflow-tooltip>
                                 </el-table-column>
 
                                 <!-- 日期 -->
                                 <el-table-column label="日期" >
-                                    <template slot-scope="scope">{{ scope.row.date }}</template>
+                                    <template slot-scope="scope">{{ scope.row.ctime | filterCtime}}</template>
                                 </el-table-column>
                                 <!-- 操作 -->
                                 <el-table-column label="操作">
@@ -95,32 +98,16 @@
             data() {
                 return {
                     // 表格数据
-                    tableData: [
-                        {
-                            username: '王小虎1',
-                            group: '超级管理员',
-                            date: '2016-05-01',
-                        },
-                        {
-                            username: '王小虎2',
-                            group: '超级管理员',
-                            date: '2016-05-02',
-                        },
-                        {
-                            username: '王小虎3',
-                            group: '超级管理员',
-                            date: '2016-05-03',
-                        },
-                        {
-                            username: '王小虎4',
-                            group: '超级管理员',
-                            date: '2016-05-04',
-                        }
-                    ],
+                    tableData: [],
                     multipleSelection: []
                 }
             },
-
+            created(){
+                var _this = this
+                $.get('/users/userList', function (data) {
+                  _this.tableData = data;
+                })
+            },
             methods: {
                 toggleSelection(rows) {
                     if (rows) {
@@ -133,8 +120,16 @@
                 },
                 handleSelectionChange(val) {
                     this.multipleSelection = val;
+                },
+                // 过滤器
+                
+            },
+             //过滤器
+            filters: {
+                    filterCtime (value) {
+                        return moment(value).format("YYYY-MM-DD HH:mm:ss");
+                    }
                 }
-            }
         })
     </script>
 
